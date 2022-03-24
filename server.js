@@ -1,11 +1,13 @@
 //Require packages
-const MySQL = require("MySQL");
+const mysql = require("mysql2");
 
-//Setup PORT & app
-//Setup middleware usage
-//Connect to database with MySQL credentials
-//Add department post
-//Add role post
-//Add employee post
-//Update employee role put
-//PORT listen
+//Setup PORT connection with credentials
+const connection = mysql.createConnection ({
+host: 'localhost',
+port: 3306,
+user: 'root',
+password: 'toor',
+database: 'employee_db',
+});
+
+module.exports = server;

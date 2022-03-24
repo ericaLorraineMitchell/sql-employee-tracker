@@ -1,6 +1,7 @@
 //Require packages for app
 const inquirer = require("inquirer");
 const consoleTable = require("consoleTable");
+const server = require("./server");
 
 //Inquirer Questions array for user input
 const start = () => {

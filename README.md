@@ -6,7 +6,7 @@ Command-line application that can manage a company's employee database. This app
 
 ## Installation
 
-You will need to install the MySQL2 package, inquirer package and also the console.table package for app.
+You will need to install the `mysql2` package, `inquirer` package and also the `console.table` package for app.
 
 ## Mock up & Visual
 

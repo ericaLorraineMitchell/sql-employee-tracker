@@ -12,7 +12,7 @@ You will need to install the MySQL2 package, inquirer package and also the conso
 
 Please see walkthrough video [here]()
 
-![example image](./Images/12-sql-homework-video-thumbnail.png)
+![example image](./images/12-sql-homework-video-thumbnail.png)
 
 ## Contact / Questions
 

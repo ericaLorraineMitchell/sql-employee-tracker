@@ -46,72 +46,101 @@ const employeeView = () => {
 };
 
 const departAdd = () => {
-  return inquirer.prompt([
-    {
-      type: "input",
-      name: "department",
-      message: "What is the name of new department?",
-    }
-  ]),
-  
-  console.log("Department successfully added");
+  return (
+    inquirer.prompt([
+      {
+        type: "input",
+        name: "department",
+        message: "What is the name of new department?",
+      },
+    ]),
+    console.log("`${departAdd}` successfully added")
+  );
 
-  let query = "INSERT INTO department `${departAdd}";
+  let query = "INSERT INTO department `${departAdd}`";
   start();
 };
 
 const roleAdd = () => {
-    return inquirer.prompt([
+  return (
+    inquirer.prompt([
       {
         type: "input",
-        name: "role",
+        name: "roleName",
         message: "What is the name of new role?",
-      }
-    ]),
-    
-    console.log("Role successfully added");
-  
-    let query = "INSERT INTO role `${roleAdd}";
-    start();
-  };
-
-  const employeeAdd = () => {
-    return inquirer.prompt([
+      },
       {
         type: "input",
-        name: "employee",
-        message: "What is the name of new employee?",
-      }
+        name: "roleSal",
+        message: "What is the salary of the role?",
+      },
+      {
+        type: "list",
+        name: "roleDep",
+        message: "What department does the role belong to?",
+        choices: [`${department}`],
+      },
     ]),
-    
-    console.log("Employee successfully added");
-  
-    let query = "INSERT INTO employee `${employeeAdd}";
-    start();
-  };
+    console.log("`${roleAdd}` successfully added")
+  );
 
-  const employeeUpdate = () => {
-    return inquirer.prompt([
+  let query = "INSERT INTO role `${roleAdd}`";
+  start();
+};
+
+const employeeAdd = () => {
+  return (
+    inquirer.prompt([
+      {
+        type: "input",
+        name: "employeeF",
+        message: "What is the first name of new employee?",
+      },
+      {
+        type: "input",
+        name: "employeeL",
+        message: "What is the last name of new employee?",
+      },
+      {
+        type: "input",
+        name: "employeeRole",
+        message: "What is the new employees role?",
+      },
+      {
+        type: "input",
+        name: "employeeMan",
+        message: "Who is the employees Manager?",
+      },
+    ]),
+    console.log("`${employeeAdd}` successfully added")
+  );
+
+  let query = "INSERT INTO employee `${employeeAdd}`";
+  start();
+};
+
+const employeeUpdate = () => {
+  return (
+    inquirer.prompt([
       {
         type: "list",
         name: "update",
         message: "Which employee do you want to update?",
-        choices: [`${employee}`]
-      }
+        choices: [`${employee}`],
+      },
     ]),
-    
-    console.log("Employee successfully updated");
-  
-    let query = "INSERT INTO employee `${employeeUpdate}";
-    start();
-  };
+    console.log("`${employeeUpdate}` successfully updated")
+  );
+
+  let query = "INSERT INTO employee `${employeeUpdate}`";
+  start();
+};
 
 //Function to initialize app
 function init() {
-    start()
-    .then((data) => {
-        //where queries should go or async order of prompts?
-    })
+  start().then((data) => {
+    //where queries should go or async order of prompts?
+  });
 }
 //Function to call app
 init();

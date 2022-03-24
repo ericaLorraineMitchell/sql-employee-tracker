@@ -1,4 +1,6 @@
 //Require packages
+const MySQL = require("MySQL");
+
 //Setup PORT & app
 //Setup middleware usage
 //Connect to database with MySQL credentials

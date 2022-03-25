@@ -18,6 +18,7 @@ const start = () => {
         "add a role",
         "add an employee",
         "update an employee role",
+        "Quit"
       ],
     },
   ]);
@@ -110,7 +111,7 @@ const employeeAdd = () => {
       {
         type: "input",
         name: "employeeMan",
-        message: "Who is the employees Manager?",
+        message: "Who is the employees Manager? (put NULL if none)",
       },
     ]),
     console.log("`${employeeAdd}` successfully added")

@@ -6,7 +6,7 @@ Command-line application that can manage a company's employee database. This app
 
 ## Installation
 
-Before starting the application change the the mysql password in server.js to your mysql password. You will need to `npm install` the `mysql2` package, `inquirer` package and also the `console.table` package for app. Start the application by running `npm start`.
+Before starting the application change the the mysql password in server.js to your mysql password and login my running `mysql -u root -p`. Once logged in run `schema.sql` then `seeds.sql` and quit mysql. You will need to navigate to root folder `npm install` the `mysql2` package, `inquirer` package and also the `console.table` package for app. Start the application by running `npm start` or `node index.js`.
 
 ## Mock up & Visual
 

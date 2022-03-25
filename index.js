@@ -1,7 +1,7 @@
 //Require packages for app
 const inquirer = require("inquirer");
-const consoleTable = require("consoleTable");
-const server = require("./server");
+const consoleTable = require("console.table");
+const db = require("./server");
 
 //Inquirer Questions array for user input
 const start = () => {
@@ -11,32 +11,33 @@ const start = () => {
       name: "start",
       message: "What would you like to do?",
       choices: [
-        "view all departments",
-        "view all roles",
-        "view all employees",
-        "add a department",
-        "add a role",
-        "add an employee",
-        "update an employee role",
-        "Quit"
+        "View all departments",
+        "View all roles",
+        "View all employees",
+        "Add a department",
+        "Add a role",
+        "Add an employee",
+        "Update an employee role",
+        "Quit",
       ],
     },
   ]);
 };
 
 const departView = () => {
-  {
-    let query = `SELECT * FROM department`;
-    console.table(department);
-  }
-  start();
+  let query = `SELECT * FROM department`;
+  db.query(query, function (err, results) {
+    console.table(results);
+    start();
+  });
 };
+
 const roleView = () => {
-  {
-    let query = `SELECT * FROM role`;
-    console.table(role);
-  }
-  start();
+  let query = `SELECT * FROM role JOIN `;
+  db.query(query, function (err, results) {
+    console.table(results);
+    start();
+  });
 };
 
 const employeeView = () => {
@@ -141,7 +142,12 @@ const employeeUpdate = () => {
 //Function to initialize app
 function init() {
   start().then((data) => {
-    //where queries should go or async order of prompts?
+    if (data.start === "View all departments") {
+      departView();
+    } else if (data.start === "View all roles") {
+      roleView();
+    }
+    // console.log(data);
   });
 }
 //Function to call app

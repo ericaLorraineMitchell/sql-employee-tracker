@@ -5,23 +5,44 @@ const db = require("./server");
 
 //Inquirer Questions array for user input
 const start = () => {
-  return inquirer.prompt([
-    {
-      type: "list",
-      name: "start",
-      message: "What would you like to do?",
-      choices: [
-        "View all departments",
-        "View all roles",
-        "View all employees",
-        "Add a department",
-        "Add a role",
-        "Add an employee",
-        "Update an employee role",
-        "Complete",
-      ],
-    },
-  ]);
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        name: "start",
+        message: "What would you like to do?",
+        choices: [
+          "View all departments",
+          "View all roles",
+          "View all employees",
+          "Add a department",
+          "Add a role",
+          "Add an employee",
+          "Update an employee role",
+        ],
+      },
+    ])
+    .then((data) => {
+      // console.log(data.start);
+      if (data.start === "View all departments") {
+        departView();
+      } else if (data.start === "View all roles") {
+        roleView();
+      } else if (data.start === "View all employees") {
+        employeeView();
+      } else if (data.start === "Add a department") {
+        departAdd();
+      } else if (data.start === "Add a role") {
+        roleAdd();
+      } else if (data.start === "Add a role") {
+        employeeAdd();
+      } else if (data.start === "Add a role") {
+        employeeUpdate();
+      } else {
+        console.log("Goodbye");
+      }
+      // console.log(data);
+    });
 };
 
 const departView = () => {
@@ -33,7 +54,7 @@ const departView = () => {
 };
 
 const roleView = () => {
-  let query = `SELECT * FROM role JOIN `;
+  let query = `SELECT * FROM role`;
   db.query(query, function (err, results) {
     console.table(results);
     start();
@@ -41,7 +62,7 @@ const roleView = () => {
 };
 
 const employeeView = () => {
-  let query = `SELECT * FROM employee JOIN `;
+  let query = `SELECT * FROM employee`;
   db.query(query, function (err, results) {
     console.table(results);
     start();
@@ -53,22 +74,24 @@ const departAdd = () => {
     .prompt([
       {
         type: "input",
-        name: "department",
+        name: "depart",
         message: "What is the name of new department?",
       },
     ])
     .then((data) => {
-      let query = `INSERT INTO department ${data.name}`;
+      console.log(data.depart);
+      let query = `INSERT INTO department (name) VALUES ${data.depart}`;
       db.query(query, function (err, results) {
-        console.log(`${data.name} successfully added`);
+        console.log(`${data.depart} successfully added`);
+        console.table(results);
         start();
       });
     });
 };
 
 const roleAdd = () => {
-  return (
-    inquirer.prompt([
+  inquirer
+    .prompt([
       {
         type: "input",
         name: "roleName",
@@ -84,18 +107,21 @@ const roleAdd = () => {
         name: "roleDep",
         message: "What department does the role belong to?",
         choices: [`${department}`],
+        //departQ, department, departView();
       },
-    ]),
-    console.log("`${roleAdd}` successfully added")
-  );
-
-  let query = "INSERT INTO role `${roleAdd}`";
-  start();
+    ])
+    .then((data) => {
+      let query = `INSERT INTO role (title,salary,depart_id) VALUES ${data.roleName}, ${data.roleName}, ${data.roleName}`;
+      db.query(query, function (err, results) {
+        console.log(`${data.roleName} successfully added`);
+        start();
+      });
+    });
 };
 
 const employeeAdd = () => {
-  return (
-    inquirer.prompt([
+  inquirer
+    .prompt([
       {
         type: "input",
         name: "employeeF",
@@ -116,45 +142,38 @@ const employeeAdd = () => {
         name: "employeeMan",
         message: "Who is the employees Manager? (put NULL if none)",
       },
-    ]),
-    console.log("`${employeeAdd}` successfully added")
-  );
-
-  let query = "INSERT INTO employee `${employeeAdd}`";
-  start();
+    ])
+    .then((data) => {
+      let query = `INSERT INTO role (title,salary,depart_id) VALUES ${data.roleName}, ${data.roleName}, ${data.roleName}`;
+      db.query(query, function (err, results) {
+        console.log(`${data.roleName} successfully added`);
+        start();
+      });
+    });
 };
 
 const employeeUpdate = () => {
-  return (
-    inquirer.prompt([
+  inquirer
+    .prompt([
       {
         type: "list",
         name: "update",
         message: "Which employee do you want to update?",
         choices: [`${employee}`],
       },
-    ]),
-    console.log("`${employeeUpdate}` successfully updated")
-  );
-
-  let query = "INSERT INTO employee `${employeeUpdate}`";
-  start();
+    ])
+    .then((data) => {
+      let query = `INSERT INTO role (title,salary,depart_id) VALUES ${data.roleName}, ${data.roleName}, ${data.roleName}`;
+      db.query(query, function (err, results) {
+        console.log(`${data.roleName} successfully added`);
+        start();
+      });
+    });
 };
 
 //Function to initialize app
 function init() {
-  start().then((data) => {
-    if (data.start === "View all departments") {
-      departView();
-    } else if (data.start === "View all roles") {
-      roleView();
-    } else if (data.start === "View all employees") {
-      employeeView();
-    } else if (data.start === "Add a department") {
-      departAdd();
-    }
-    // console.log(data);
-  });
+  start();
 }
 //Function to call app
 init();

@@ -18,7 +18,7 @@ const start = () => {
         "Add a role",
         "Add an employee",
         "Update an employee role",
-        "Quit",
+        "Complete",
       ],
     },
   ]);
@@ -41,27 +41,29 @@ const roleView = () => {
 };
 
 const employeeView = () => {
-  {
-    let query = "SELECT * FROM employee";
-    console.table(employee);
-  }
-  start();
+  let query = `SELECT * FROM employee JOIN `;
+  db.query(query, function (err, results) {
+    console.table(results);
+    start();
+  });
 };
 
 const departAdd = () => {
-  return (
-    inquirer.prompt([
+  inquirer
+    .prompt([
       {
         type: "input",
         name: "department",
         message: "What is the name of new department?",
       },
-    ]),
-    console.log("`${departAdd}` successfully added")
-  );
-
-  let query = "INSERT INTO department `${departAdd}`";
-  start();
+    ])
+    .then((data) => {
+      let query = `INSERT INTO department ${data.name}`;
+      db.query(query, function (err, results) {
+        console.log(`${data.name} successfully added`);
+        start();
+      });
+    });
 };
 
 const roleAdd = () => {
@@ -146,6 +148,10 @@ function init() {
       departView();
     } else if (data.start === "View all roles") {
       roleView();
+    } else if (data.start === "View all employees") {
+      employeeView();
+    } else if (data.start === "Add a department") {
+      departAdd();
     }
     // console.log(data);
   });

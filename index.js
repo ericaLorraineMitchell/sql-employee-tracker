@@ -19,6 +19,7 @@ const start = () => {
           "Add a role",
           "Add an employee",
           "Update an employee role",
+          "Exit",
         ],
       },
     ])
@@ -54,7 +55,7 @@ const departView = () => {
 };
 
 const roleView = () => {
-  let query = `SELECT * FROM role`;
+  let query = `SELECT * FROM role JOIN department ON department.id = role.depart_id`;
   db.query(query, function (err, results) {
     console.table(results);
     start();
@@ -79,9 +80,9 @@ const departAdd = () => {
       },
     ])
     .then((data) => {
-      console.log(data.depart);
-      let query = `INSERT INTO department (name) VALUES ${data.depart}`;
-      db.query(query, function (err, results) {
+      // console.log(data.depart);
+      let query = `INSERT INTO department (name) VALUES (?)`;
+      db.query(query, [data.depart], (err, results) => {
         console.log(`${data.depart} successfully added`);
         console.table(results);
         start();
@@ -90,6 +91,8 @@ const departAdd = () => {
 };
 
 const roleAdd = () => {
+  const departList = db.query(`SELECT * FROM department`, (err, results) => 
+  results.forEach((choice, i) => {
   inquirer
     .prompt([
       {
@@ -106,8 +109,7 @@ const roleAdd = () => {
         type: "list",
         name: "roleDep",
         message: "What department does the role belong to?",
-        choices: [`${department}`],
-        //departQ, department, departView();
+        choices: departList,
       },
     ])
     .then((data) => {

@@ -91,8 +91,14 @@ const departAdd = () => {
 };
 
 const roleAdd = () => {
-  const departList = db.query(`SELECT * FROM department`, (err, results) => 
-  results.forEach((choice, i) => {
+  const depart = `SELECT * FROM department`;
+  let departList = [department.id, department.name];
+  db.query(depart, departList, (err, results) => {
+    results.forEach((department) => {
+      department.push(departList);
+    });
+  });
+
   inquirer
     .prompt([
       {

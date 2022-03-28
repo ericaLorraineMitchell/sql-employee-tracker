@@ -35,9 +35,9 @@ const start = () => {
         departAdd();
       } else if (data.start === "Add a role") {
         roleAdd();
-      } else if (data.start === "Add a role") {
+      } else if (data.start === "Add an employee") {
         employeeAdd();
-      } else if (data.start === "Add a role") {
+      } else if (data.start === "Update an employee role") {
         employeeUpdate();
       } else {
         console.log("Goodbye");
@@ -55,7 +55,7 @@ const departView = () => {
 };
 
 const roleView = () => {
-  let query = `SELECT * FROM role JOIN department ON department.id = role.depart_id`;
+  let query = `SELECT * FROM role`;
   db.query(query, function (err, results) {
     console.table(results);
     start();
@@ -84,7 +84,7 @@ const departAdd = () => {
       let query = `INSERT INTO department (name) VALUES (?)`;
       db.query(query, [data.depart], (err, results) => {
         console.log(`${data.depart} successfully added`);
-        console.table(results);
+        // console.table(results);
         start();
       });
     });
@@ -119,11 +119,15 @@ const roleAdd = () => {
       },
     ])
     .then((data) => {
-      let query = `INSERT INTO role (title,salary,depart_id) VALUES ${data.roleName}, ${data.roleName}, ${data.roleName}`;
-      db.query(query, function (err, results) {
-        console.log(`${data.roleName} successfully added`);
-        start();
-      });
+      let query = `INSERT INTO role (title,salary,depart_id) VALUES (?)`;
+      db.query(
+        query,
+        [data.roleName, data.roleSal, data.roleDep],
+        (err, results) => {
+          console.log(`${data.roleName} successfully added`);
+          start();
+        }
+      );
     });
 };
 
@@ -152,11 +156,15 @@ const employeeAdd = () => {
       },
     ])
     .then((data) => {
-      let query = `INSERT INTO role (title,salary,depart_id) VALUES ${data.roleName}, ${data.roleName}, ${data.roleName}`;
-      db.query(query, function (err, results) {
-        console.log(`${data.roleName} successfully added`);
-        start();
-      });
+      let query = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)`;
+      db.query(
+        query,
+        [data.employeeF, data.employeeL, data.employeeRole, data.employeeMan],
+        (err, results) => {
+          console.log(`${data.employeeF} ${data.employeeL} successfully added`);
+          start();
+        }
+      );
     });
 };
 

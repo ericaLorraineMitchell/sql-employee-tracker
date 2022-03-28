@@ -97,7 +97,7 @@ const roleAdd = () => {
     results.forEach((department) => {
       let departObj = {
         name: department.name,
-        id: department.i,
+        id: department.id,
       };
       departList.push(departObj);
     });
@@ -136,6 +136,17 @@ const roleAdd = () => {
 };
 
 const employeeAdd = () => {
+  const roles = `SELECT role.title, role.id FROM role`;
+  let roleList = [];
+  db.query(roles, (err, results) => {
+    results.forEach((role) => {
+      let roleObj = {
+        name: role.title,
+        id: role.id,
+      };
+     roleList.push(roleObj);
+    });
+  });
   inquirer
     .prompt([
       {
@@ -149,9 +160,10 @@ const employeeAdd = () => {
         message: "What is the last name of new employee?",
       },
       {
-        type: "input",
+        type: "list",
         name: "employeeRole",
         message: "What is the new employees role?",
+        choices: roleList,
       },
       {
         type: "input",
@@ -163,7 +175,7 @@ const employeeAdd = () => {
       let query = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)`;
       db.query(
         query,
-        [data.employeeF, data.employeeL, data.employeeRole, data.employeeMan],
+        [[data.employeeF, data.employeeL, data.employeeRole, data.employeeMan]],
         (err, results) => {
           console.log(`${data.employeeF} ${data.employeeL} successfully added`);
           start();

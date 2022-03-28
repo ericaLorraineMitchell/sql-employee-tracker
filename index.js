@@ -92,10 +92,14 @@ const departAdd = () => {
 
 const roleAdd = () => {
   const depart = `SELECT * FROM department`;
-  let departList = [department.id, department.name];
-  db.query(depart, departList, (err, results) => {
+  let departList = [];
+  db.query(depart, (err, results) => {
     results.forEach((department) => {
-      department.push(departList);
+      let departObj = {
+        name: department.name,
+        id: department.i,
+      };
+      departList.push(departObj);
     });
   });
 
@@ -119,10 +123,10 @@ const roleAdd = () => {
       },
     ])
     .then((data) => {
-      let query = `INSERT INTO role (title,salary,depart_id) VALUES (?)`;
+      let query = `INSERT INTO role (title, salary, depart_id) VALUES (?, ?, ?)`;
       db.query(
         query,
-        [data.roleName, data.roleSal, data.roleDep],
+        [[data.roleName, data.roleSal, data.roleDep]],
         (err, results) => {
           console.log(`${data.roleName} successfully added`);
           start();

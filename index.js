@@ -75,12 +75,12 @@ const departAdd = () => {
     .prompt([
       {
         type: "input",
-        name: "depart",
+        name: "name",
         message: "What is the name of new department?",
       },
     ])
     .then((data) => {
-      console.log(data.depart);
+      // console.log(data.depart);
       let query = `INSERT INTO department (name) VALUES = ?`;
       db.query(query, data.depart, (err, results) => {
         console.log(`${data.depart} successfully added`);
@@ -124,7 +124,7 @@ const roleAdd = () => {
     ])
     .then((data) => {
       let query = `INSERT INTO role (title, salary, depart_id) VALUES ?`;
-      console.log(data);
+      // console.log(data);
       db.query(query, data, (err, results) => {
         console.log(`${data.title} successfully added`);
         start();
@@ -139,7 +139,7 @@ const employeeAdd = () => {
     results.forEach((role) => {
       let roleObj = {
         name: role.title,
-        id: role.id,
+        value: role.id,
       };
       roleList.push(roleObj);
     });
@@ -148,33 +148,34 @@ const employeeAdd = () => {
     .prompt([
       {
         type: "input",
-        name: "employeeF",
+        name: "first_name",
         message: "What is the first name of new employee?",
       },
       {
         type: "input",
-        name: "employeeL",
+        name: "last_name",
         message: "What is the last name of new employee?",
       },
       {
         type: "list",
-        name: "employeeRole",
+        name: "role_id",
         message: "What is the new employees role?",
         choices: roleList,
       },
       {
         type: "input",
-        name: "employeeMan",
+        name: "manager_id",
         message: "Who is the employees Manager? (put NULL if none)",
       },
     ])
     .then((data) => {
-      let query = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)`;
+      let query = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ?`; 
+    console.log(data);
       db.query(
         query,
-        [[data.employeeF, data.employeeL, data.employeeRole, data.employeeMan]],
+        data,
         (err, results) => {
-          console.log(`${data.employeeF} ${data.employeeL} successfully added`);
+          console.log(`${data.first_name} ${data.last_name} successfully added`);
           start();
         }
       );

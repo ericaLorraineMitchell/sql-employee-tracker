@@ -144,7 +144,7 @@ const employeeAdd = () => {
         name: role.title,
         id: role.id,
       };
-     roleList.push(roleObj);
+      roleList.push(roleObj);
     });
   });
   inquirer
@@ -185,19 +185,30 @@ const employeeAdd = () => {
 };
 
 const employeeUpdate = () => {
+  const update = `SELECT employee.first_name, employee.last_name, employee.role_id FROM employee`;
+  let employList = [];
+  db.query(update, (err, results) => {
+    results.forEach((employee) => {
+      let employObj = {
+        name: employee.first_name + " " + employee.last_name, 
+        id: employee.role_id,
+      };
+      employList.push(employObj);
+    });
+  });
   inquirer
     .prompt([
       {
         type: "list",
         name: "update",
         message: "Which employee do you want to update?",
-        choices: [`${employee}`],
+        choices: employList,
       },
     ])
     .then((data) => {
-      let query = `INSERT INTO role (title,salary,depart_id) VALUES ${data.roleName}, ${data.roleName}, ${data.roleName}`;
+      let query = `UPDATE employee (role_id)VALUES ?`;
       db.query(query, function (err, results) {
-        console.log(`${data.roleName} successfully added`);
+        console.log(`${employee.role_id} successfully updated`);
         start();
       });
     });

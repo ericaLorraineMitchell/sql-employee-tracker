@@ -123,12 +123,17 @@ const roleAdd = () => {
       },
     ])
     .then((data) => {
-      let query = `INSERT INTO role (title, salary, depart_id) VALUES ?`;
-      // console.log(data);
-      db.query(query, data, (err, results) => {
-        console.log(`${data.title} successfully added`);
-        start();
-      });
+      let query = `INSERT INTO role (title, salary, depart_id) VALUES (?,?,?)`;
+      console.log(data);
+      db.query(
+        query,
+        [data.title, data.salary, data.depart_id],
+        (err, results) => {
+          console.log(err);
+          console.log(`${data.title} successfully added`);
+          start();
+        }
+      );
     });
 };
 
@@ -142,6 +147,17 @@ const employeeAdd = () => {
         value: role.id,
       };
       roleList.push(roleObj);
+    });
+  });
+  const manager = `SELECT * FROM employee`;
+  let managerList = [];
+  db.query(manager, (err, results) => {
+    results.forEach((employee) => {
+      let managerObj = {
+        name: employee.first_name + " " + employee.last_name,
+        value: employee.id,
+      };
+      managerList.push(managerObj);
     });
   });
   inquirer
@@ -163,19 +179,22 @@ const employeeAdd = () => {
         choices: roleList,
       },
       {
-        type: "input",
+        type: "list",
         name: "manager_id",
-        message: "Who is the employees Manager? (put NULL if none)",
+        message: managerList,
       },
     ])
     .then((data) => {
-      let query = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ?`; 
-    console.log(data);
+      let query = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)`;
+      console.log(data);
       db.query(
         query,
-        data,
+        [data.first_name, data.last_name, data.role_id, data.manager_id],
         (err, results) => {
-          console.log(`${data.first_name} ${data.last_name} successfully added`);
+          console.log(err);
+          console.log(
+            `${data.first_name} ${data.last_name} successfully added`
+          );
           start();
         }
       );
@@ -204,7 +223,7 @@ const employeeUpdate = () => {
       },
     ])
     .then((data) => {
-      let query = `UPDATE employee AT role_id VALUES ?`;
+      let query = `UPDATE employee AT role_id VALUES = ?`;
       db.query(query, function (err, results) {
         console.log(`${employee.role_id} successfully updated`);
         start();

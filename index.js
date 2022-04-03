@@ -216,7 +216,6 @@ const employeeUpdate = () => {
     });
   });
   const role = `SELECT * FROM role`;
-  console.log(role);
   let updateR = [];
   db.query(role, (err, results) => {
     results.forEach((role) => {
@@ -225,28 +224,29 @@ const employeeUpdate = () => {
         value: role.id,
       };
       updateR.push(updateRole);
+      // console.log(updateRole);
     });
   });
   inquirer
     .prompt([
       {
         type: "list",
-        name: "id",
+        name: "first_name",
         message: "Which employee do you want to update?",
         choices: updateE,
       },
       {
         type: "list",
-        name: "role_id",
+        name: "title",
         message: "Which role do you want to update to?",
         choices: updateR,
       },
     ])
     .then((data) => {
-      let query = `UPDATE employee AT role_id VALUES = ?`;
+      let query = `UPDATE employee SET role_id = ? WHERE id = ?`;
       db.query(
         query,
-        [data.first_name, data.last_name, data.role_id],
+        data.role_id,
         (err, results) => {
           console.log(err);
           console.log(

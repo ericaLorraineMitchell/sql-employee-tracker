@@ -81,9 +81,10 @@ const departAdd = () => {
     ])
     .then((data) => {
       // console.log(data.depart);
-      let query = `INSERT INTO department (name) VALUES = ?`;
-      db.query(query, data.depart, (err, results) => {
-        console.log(`${data.depart} successfully added`);
+      let query = `INSERT INTO department (name) VALUES (?)`;
+      db.query(query, data.name, (err, results) => {
+        console.log(err);
+        console.log(`${data.name} successfully added`);
         // console.table(results);
         start();
       });
@@ -181,7 +182,8 @@ const employeeAdd = () => {
       {
         type: "list",
         name: "manager_id",
-        message: managerList,
+        message: "What is their manager name?",
+        choices: managerList,
       },
     ])
     .then((data) => {
@@ -202,32 +204,57 @@ const employeeAdd = () => {
 };
 
 const employeeUpdate = () => {
-  const update = `SELECT employee.first_name, employee.last_name, employee.role_id FROM employee`;
-  let employList = [];
-  db.query(update, (err, results) => {
+  const employees = `SELECT * FROM employee`;
+  let updateE = [];
+  db.query(employees, (err, results) => {
     results.forEach((employee) => {
       let employObj = {
         name: employee.first_name + " " + employee.last_name,
-        id: employee.role_id,
+        value: employee.id,
       };
-      employList.push(employObj);
+      updateE.push(employObj);
+    });
+  });
+  const role = `SELECT * FROM role`;
+  console.log(role);
+  let updateR = [];
+  db.query(role, (err, results) => {
+    results.forEach((role) => {
+      let updateRole = {
+        name: role.title,
+        value: role.id,
+      };
+      updateR.push(updateRole);
     });
   });
   inquirer
     .prompt([
       {
         type: "list",
-        name: "update",
+        name: "id",
         message: "Which employee do you want to update?",
-        choices: employList,
+        choices: updateE,
+      },
+      {
+        type: "list",
+        name: "role_id",
+        message: "Which role do you want to update to?",
+        choices: updateR,
       },
     ])
     .then((data) => {
       let query = `UPDATE employee AT role_id VALUES = ?`;
-      db.query(query, function (err, results) {
-        console.log(`${employee.role_id} successfully updated`);
-        start();
-      });
+      db.query(
+        query,
+        [data.first_name, data.last_name, data.role_id],
+        (err, results) => {
+          console.log(err);
+          console.log(
+            `${data.first_name} ${data.last_name} successfully updated`
+          );
+          start();
+        }
+      );
     });
 };
 

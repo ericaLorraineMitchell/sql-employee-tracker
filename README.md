@@ -10,7 +10,7 @@ Before starting the application change the the mysql password in server.js to yo
 
 ## Mock up & Visual
 
-Please see walkthrough video [here]()
+Please see walkthrough video [here](https://drive.google.com/file/d/10eM_ZbsUOVcMhN8jqrK6w6tRgScGDYcK/view?usp=sharing)
 
 ![example image](./images/12-sql-homework-video-thumbnail.png)
 
